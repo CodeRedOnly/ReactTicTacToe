@@ -1,26 +1,30 @@
 import { useState } from 'react';
 
 function calculateWinner (squares) {
-  const winningStrings = ['XXX', 'OOO'];
+  const winningStrings = ['X'.repeat(squares.length), 'O'.repeat(squares.length)];
+  let d1 = '', d2 = '';  
   for (var i = 0; i < squares.length; i++) {
-    let s = squares[i].reduce((acc, element) => acc + element, '');
+    let s = squares[i].join('');
     if (winningStrings.includes(s)) {
       return s[0];
     }
+
     s = '';
-    let d1 = '', d2 = '';
     for (var j = 0; j < squares[i].length; j++) {
       s += squares[j][i];
-      d1 += squares[j][j];
-      d2 += squares[squares.length - j - 1][j];
     }
     if (winningStrings.includes(s)) {
       return s[0];
-    }else if (winningStrings.includes(d1)) {
-      return d1[0];  
-    } else if (winningStrings.includes(d2)) {
-      return d2[0];
-    }
+    } 
+
+    d1 += squares[i][i];
+    d2 += squares[squares.length - i - 1][i];    
+  }
+
+  if (winningStrings.includes(d1)) {
+    return d1[0];  
+  } else if (winningStrings.includes(d2)) {
+    return d2[0];
   }
 }
 
@@ -56,16 +60,22 @@ export default function Game () {
 
   return (
     <>  
-      <div className="status">
-      Next Player: {isX ? 'X' : 'O'}
-    </div>  
-      <div className="game">
-        <div className="game-board">
-          <Board squares={currentBoard} onPlay={handlePlay} isX={isX} winner={winner} />
+      <h1>React-tac-toe</h1>
+      <div className="game-container">
+        <div className="status">
+          <h2>
+            Next Player: {isX ? 'X' : 'O'}
+          </h2>
+        </div>  
+        <div className="game">
+          <div className="game-board">
+            <Board squares={currentBoard} onPlay={handlePlay} isX={isX} winner={winner} />
+          </div>
         </div>
         <div className="game-info">
-          <ol>{ moves }</ol>
+          <ul>{ moves }</ul>
         </div>
+        <Winner value={winner} />
       </div>
     </>
   );  
@@ -81,39 +91,29 @@ export function Board({ squares, onPlay, isX, winner }) {
  
     onPlay(nextSquares);      
   }
-
-  let rows = [];
-  for (var i = 0; i < 3; i++) {
-    rows.push(<Row rowNum={i} row={squares[i]} onSquareClick={onSquareClick} />);
-  }
   
   return <>
     <div className="board">
-      { rows }
+      { squares.map( (row, rowNum) => <Row key={rowNum} rowNum={rowNum} row={row} onSquareClick={onSquareClick} />) }
     </div>
-    <Winner value={winner} />      
+    
   </>;
 }
 
 export function Row ({ rowNum, row, onSquareClick }) {
-  let squares = [];
-
-  for (var i = 0; i < 3; i++) {
-    squares.push(<Square value={row[i]} onSquareClick={() => onSquareClick(rowNum, i)} />);
-  }
   return <>
     <div className="board-row">
-      { squares }
+      { row.map( (value, col) => <Square key={col} value={value} onSquareClick={() => onSquareClick(rowNum, col)} />) }
     </div>
   </>;
 }
 
 
 export function Square({ value, onSquareClick }) {
-  return <button className="square" onClick={onSquareClick}>{value}</button>;
+  return <div className="square" onClick={onSquareClick}>{value}</div>;
 }
 
 export function Winner({ value }) {
-  return <div className="winner">{ value ? value + " Wins!" : '' }</div>
+  return <h2 className="winner">{ value ? value + " Wins!" : '' }</h2>
 }
 

@@ -1,17 +1,15 @@
-* {
-  box-sizing: border-box;
-}
-
-body {
-  font-family: sans-serif;
-  margin: 20px;
-  padding: 0;
-}
-
 ul {
   padding-inline-start: 20px;
 }
 
+ul button {
+  background-color: darkgrey;  
+  color: black;
+  border-color: #222;
+  padding: 10px;
+  font-size: 12pt;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -20,21 +18,35 @@ body {
   font-family: sans-serif;
   margin: 20px;
   padding: 0;
+  color: white;
+  background-color:#222;
+}
+
+.game-container {
+  display: grid;
+  grid-template-areas: "status winner history" "game game history";
+  grid-template-columns: 1fr 2fr 1fr;
+  max-width: 800px;
+  margin: 0px auto;
 }
 
 .square {
-  background: #fff;
+  display: table-cell;
   border: 1px solid #999;
-  float: left;
   font-size: 24px;
   font-weight: bold;
   line-height: 34px;
-  height: 34px;
+  height: 10vw;
   margin-right: -1px;
   margin-top: -1px;
   padding: 0;
   text-align: center;
-  width: 34px;
+  vertical-align: middle;
+  width: 10vw;
+}
+
+.board {
+  grid-area: game;  
 }
 
 .board-row:after {
@@ -44,19 +56,23 @@ body {
 }
 
 .status {
+  grid-area: status;
   margin-bottom: 10px;
 }
+
 .game {
+  grid-area: game;
   display: flex;
   flex-direction: row;
 }
 
 .game-info {
-  margin-left: 20px;
+  grid-area: history;
+  justify-self: end;
 }
 
 .winner {
-  font-weight: bold;
-  font-size: 32pt;
-  margin: 25px;  
+  grid-area: winner;
+  justify-self: end;
+  font-size: 22pt;
 }
