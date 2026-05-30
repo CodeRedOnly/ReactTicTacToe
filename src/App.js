@@ -25,21 +25,19 @@ function calculateWinner (squares) {
 }
 
 export default function Game () {
-  const [isX, setIsX] = useState(true);
   const [winner, setWinner] = useState(null);  
   const [history, updateHistory] = useState([Array(3).fill(Array(3).fill(''))]);
   const currentBoard = history[history.length - 1];
+  const isX = history.length % 2 === 1;
   
   function handlePlay (nextSquares) {
     updateHistory([...history, nextSquares]);
     setWinner(calculateWinner(nextSquares));
-    setIsX(!isX);    
   }
 
   function jumpTo (move) {
     updateHistory(history.slice(0, move + 1));
     setWinner(calculateWinner(history[move]));
-    setIsX(moves % 2 == 1);
   }
   
   const moves = history.map((squares, move) => {
