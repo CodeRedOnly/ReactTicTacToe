@@ -39,7 +39,7 @@ export default function Game () {
   function jumpTo (move) {
     updateHistory(history.slice(0, move + 1));
     setWinner(calculateWinner(history[move]));
-    setIsX(moves % 2 == 0);
+    setIsX(moves % 2 == 1);
   }
   
   const moves = history.map((squares, move) => {
