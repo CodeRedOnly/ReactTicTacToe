@@ -82,22 +82,28 @@ export function Board({ squares, onPlay, isX, winner }) {
     onPlay(nextSquares);      
   }
 
+  let rows = [];
+  for (var i = 0; i < 3; i++) {
+    rows.push(<Row rowNum={i} row={squares[i]} onSquareClick={onSquareClick} />);
+  }
+  
   return <>
     <div className="board">
-      <Row rowNum={0} row={squares[0]} onSquareClick={onSquareClick}/>
-      <Row rowNum={1} row={squares[1]} onSquareClick={onSquareClick}/>
-      <Row rowNum={2} row={squares[2]} onSquareClick={onSquareClick}/>
+      { rows }
     </div>
     <Winner value={winner} />      
   </>;
 }
 
 export function Row ({ rowNum, row, onSquareClick }) {
+  let squares = [];
+
+  for (var i = 0; i < 3; i++) {
+    squares.push(<Square value={row[i]} onSquareClick={() => onSquareClick(rowNum, i)} />);
+  }
   return <>
     <div className="board-row">
-      <Square value={row[0]} onSquareClick={() => onSquareClick(rowNum, 0)}></Square>
-      <Square value={row[1]} onSquareClick={() => onSquareClick(rowNum, 1)}></Square>
-      <Square value={row[2]} onSquareClick={() => onSquareClick(rowNum, 2)}></Square>
+      { squares }
     </div>
   </>;
 }
